@@ -11,6 +11,7 @@ public class ButtonHelper : MonoBehaviour
     public GameObject go;
     public Vector3 spawnPosition;
     private MeshCollider meshCollider;
+
     public void HandleClick()
     {
         GameObject instance = Instantiate(go, spawnPosition, Quaternion.identity);
@@ -19,12 +20,14 @@ public class ButtonHelper : MonoBehaviour
         Rigidbody rb = instance.AddComponent<Rigidbody>();
         AddCollider(instance.transform);
 
-        rb.useGravity = false;
-        rb.isKinematic = true;
-        XRGrabInteractable gi = instance.AddComponent<XRGrabInteractable>();
-        gi.movementType = XRBaseInteractable.MovementType.VelocityTracking;
-        gi.useDynamicAttach = true;
+        rb.useGravity = true;
+        rb.isKinematic = false;
 
+        XRGrabInteractable gi = instance.AddComponent<XRGrabInteractable>();
+        gi.movementType = XRBaseInteractable.MovementType.Instantaneous;
+        // Permettre à l'objet de garder la propriété kinematic lorsqu'il est grab  
+        gi.forceGravityOnDetach = true;
+        gi.useDynamicAttach = false;
 
     }
 
@@ -49,6 +52,5 @@ public class ButtonHelper : MonoBehaviour
         {
             AddCollider(child);
         }
-
     }
 }
